@@ -16,7 +16,22 @@ from langchain_community.document_loaders import TextLoader
 raw_filename = 'abc-grocery-help-desk-data.md'
 loader = TextLoader(raw_filename, encoding="utf-8")
 docs = loader.load()
-print(docs)
+# print(docs)
 text = docs[0].page_content
 print(len(text))
-print(text)
+# print(text)
+
+########################################################################################################################
+# 03 - SPLIT DOCUMENT INTO CHUNKS
+########################################################################################################################
+
+from langchain_text_splitters import MarkdownHeaderTextSplitter
+
+splitter = MarkdownHeaderTextSplitter(
+    headers_to_split_on=[("###", "id")],
+    strip_headers=True)
+
+chunked_docs = splitter.split_text(text)
+print(len(chunked_docs), "Q/A chunks")
+print(chunked_docs[0])
+print(chunked_docs[0].page_content)
